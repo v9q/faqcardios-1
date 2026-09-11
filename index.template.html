@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Central de Ajuda Cardios (rascunho)</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --ink:#1a2433; --ink-soft:#5b6b7c;
+    --brand:#0f6e5e; --brand-dark:#0b5347; --brand-soft:#e4f3ef;
+    --warn-bg:#fff6e5; --warn-ink:#8a5b00; --warn-border:#f0c869;
+    --border:#e3e8ee; --shadow:0 1px 3px rgba(20,30,40,.08), 0 1px 2px rgba(20,30,40,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:64px}
+  header.hero{background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff;padding:48px 16px 72px}
+  .hero-inner{max-width:760px;margin:0 auto;text-align:center}
+  .hero-inner .draft-badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:4px 12px;border-radius:999px;font-size:12px;letter-spacing:.03em;margin-bottom:14px}
+  .hero-inner h1{font-size:28px;margin:0 0 8px}
+  .hero-inner p{margin:0 0 22px;opacity:.9;font-size:15px}
+  .search-box{max-width:560px;margin:0 auto;position:relative}
+  .search-box input{width:100%;padding:14px 16px 14px 44px;border-radius:12px;border:none;font-size:15px;box-shadow:var(--shadow)}
+  .search-box svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5}
+  main{max-width:960px;margin:-40px auto 0;padding:0 16px}
+  .card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border)}
+  .categories{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;padding:0;list-style:none;margin:0}
+  .cat-card{padding:20px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease}
+  .cat-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(20,30,40,.12)}
+  .cat-card h3{margin:0 0 6px;font-size:16px}
+  .cat-card .count{font-size:13px;color:var(--ink-soft)}
+  .cat-card .volume{margin-top:10px;font-size:12px;color:var(--brand-dark);background:var(--brand-soft);display:inline-block;padding:3px 8px;border-radius:999px}
+  .cat-card.skeleton{opacity:.6}
+  .cat-card.skeleton .count{font-style:italic}
+  section.view{margin-top:22px;padding:24px}
+  .breadcrumb{font-size:13px;color:var(--ink-soft);margin-bottom:14px;cursor:pointer}
+  .breadcrumb span{color:var(--brand-dark);cursor:pointer}
+  .article-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .article-item{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .article-item:hover{border-color:var(--brand)}
+  .article-item .titulo{font-size:14.5px;font-weight:600}
+  .article-item .volume{font-size:12px;color:var(--ink-soft);white-space:nowrap}
+  .flag{display:inline-block;background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-border);font-size:11px;padding:2px 7px;border-radius:6px;margin-left:8px;vertical-align:middle}
+  .article-body h2{font-size:16px;margin:22px 0 8px}
+  .article-body h2:first-child{margin-top:0}
+  .article-body p{line-height:1.6;font-size:14.5px}
+  .article-body ul,.article-body ol{line-height:1.6;font-size:14.5px;padding-left:22px}
+  .article-body strong{color:var(--brand-dark)}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .meta-pill{font-size:12px;background:#eef1f5;color:var(--ink-soft);padding:4px 10px;border-radius:999px}
+  .video-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--brand-dark);text-decoration:none;font-weight:600;margin-bottom:18px}
+  .empty-hint{font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+  .wa-cta{position:fixed;right:20px;bottom:20px;background:#25D366;color:#fff;border-radius:999px;padding:12px 18px;font-size:14px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;text-decoration:none}
+  .no-results{padding:32px;text-align:center;color:var(--ink-soft)}
+  footer.note{max-width:960px;margin:28px auto 0;padding:0 16px 20px;font-size:12px;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="draft-badge">RASCUNHO — para discussão interna</div>
+    <h1>Central de Ajuda Cardios</h1>
+    <p>Como podemos te ajudar? Busque por equipamento, software ou palavra-chave.</p>
+    <div class="search-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="Ex: cartão de memória, Bluetooth, CardioNet...">
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="app" class="card"></div>
+</main>
+
+<footer class="note">Protótipo de demonstração — conteúdo baseado na análise de atendimentos do Suri (jun–set/2026), manuais, folhetos e vídeos oficiais Cardios. Ver <code>docs/analise-dados-suporte.md</code> para o detalhe completo.</footer>
+
+<a class="wa-cta" href="#" onclick="return false;">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.6 0-3.1-.42-4.4-1.16l-.32-.19-3.01.79.8-2.93-.2-.32A7.94 7.94 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/></svg>
+  Falar no WhatsApp
+</a>
+
+<script id="faq-data" type="application/json">__DATA__</script>
+<script>
+const DATA = JSON.parse(document.getElementById('faq-data').textContent);
+
+function mdToHtml(md) {
+  const lines = md.split('\n');
+  let html = '';
+  let inList = false;
+  for (let line of lines) {
+    line = line.trim();
+    if (!line) { if (inList) { html += '</ul>'; inList = false; } continue; }
+    if (line.startsWith('## ')) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<h2>${inline(line.slice(3))}</h2>`;
+    } else if (/^[0-9]+\.\s/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<p>${inline(line)}</p>`;
+    } else if (line.startsWith('- ')) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += `<li>${inline(line.slice(2))}</li>`;
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<p>${inline(line)}</p>`;
+    }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+function inline(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+}
+
+function catIcon(cat){
+  return {
+    'Holter':'🫀','MAPA':'🩺','CardioNet':'🌐','CardioSmart':'💻',
+    'Pressão Central':'📈','ECG':'📉','Comercial':'💬','Financeiro':'💳',
+    'Assistência Técnica':'🛠️'
+  }[cat] || '📄';
+}
+
+const app = document.getElementById('app');
+
+function renderHome() {
+  const items = DATA.map(c => {
+    const n = c.artigos.length;
+    const skeleton = n === 0;
+    return `<li class="cat-card ${skeleton ? 'skeleton' : ''}" onclick="renderCategory('${encodeURIComponent(c.categoria)}')">
+      <h3>${catIcon(c.categoria)} ${c.categoria}</h3>
+      <div class="count">${skeleton ? 'em construção — próxima rodada' : n + ' artigo' + (n>1?'s':'')}</div>
+      ${c.esqueleto ? `<div class="volume">${c.esqueleto.volume_suri || ''}</div>` : (c.artigos[0] ? `<div class="volume">${c.artigos.reduce((s,a)=> s, '')}</div>` : '')}
+    </li>`;
+  }).join('');
+  app.innerHTML = `<section class="view"><ul class="categories">${items}</ul></section>`;
+}
+
+function renderCategory(catEncoded) {
+  const cat = decodeURIComponent(catEncoded);
+  const data = DATA.find(c => c.categoria === cat);
+  if (!data) return renderHome();
+  if (data.artigos.length === 0) {
+    app.innerHTML = `<section class="view">
+      <div class="breadcrumb"><span onclick="renderHome()">Central de Ajuda</span> / ${cat}</div>
+      <h2>${catIcon(cat)} ${cat}</h2>
+      <div class="empty-hint">${mdToHtml(data.esqueleto.body)}</div>
+    </section>`;
+    return;
+  }
+  const items = data.artigos.map((a, i) => `
+    <li class="article-item" onclick="renderArticle('${encodeURIComponent(cat)}', ${i})">
+      <span class="titulo">${a.titulo}${a.status && a.status.startsWith('⚠️') ? '<span class="flag">revisão pendente</span>' : ''}</span>
+      <span class="volume">${a.volume_suri || ''}</span>
+    </li>`).join('');
+  app.innerHTML = `<section class="view">
+    <div class="breadcrumb"><span onclick="renderHome()">Central de Ajuda</span> / ${cat}</div>
+    <h2>${catIcon(cat)} ${cat}</h2>
+    <ul class="article-list">${items}</ul>
+  </section>`;
+}
+
+function renderArticle(catEncoded, idx) {
+  const cat = decodeURIComponent(catEncoded);
+  const data = DATA.find(c => c.categoria === cat);
+  const a = data.artigos[idx];
+  const pills = [];
+  if (a.volume_suri) pills.push(a.volume_suri);
+  if (a.produtos) pills.push((Array.isArray(a.produtos)?a.produtos.join(', '):a.produtos));
+  app.innerHTML = `<section class="view">
+    <div class="breadcrumb"><span onclick="renderHome()">Central de Ajuda</span> / <span onclick="renderCategory('${encodeURIComponent(cat)}')">${cat}</span> / artigo</div>
+    <h2 style="font-size:19px">${a.titulo}${a.status && a.status.startsWith('⚠️') ? '<span class="flag">revisão pendente</span>' : ''}</h2>
+    <div class="meta-row">${pills.map(p=>`<span class="meta-pill">${p}</span>`).join('')}</div>
+    ${a.video ? `<a class="video-link" href="${a.video}" target="_blank" rel="noopener">▶ Ver vídeo de treinamento relacionado</a>` : ''}
+    <div class="article-body">${mdToHtml(a.body)}</div>
+  </section>`;
+}
+
+document.getElementById('search').addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  if (!q) { renderHome(); return; }
+  const results = [];
+  DATA.forEach(c => c.artigos.forEach((a, i) => {
+    const hay = (a.titulo + ' ' + a.categoria + ' ' + (a.body||'')).toLowerCase();
+    if (hay.includes(q)) results.push({cat: c.categoria, idx: i, a});
+  }));
+  if (results.length === 0) {
+    app.innerHTML = `<section class="view no-results">Nenhum artigo encontrado para "${e.target.value}". Em breve isso vira um gatilho para abrir o chat com um atendente.</section>`;
+    return;
+  }
+  const items = results.map(r => `
+    <li class="article-item" onclick="renderArticle('${encodeURIComponent(r.cat)}', ${r.idx})">
+      <span class="titulo">${catIcon(r.cat)} ${r.a.titulo}</span>
+      <span class="volume">${r.cat}</span>
+    </li>`).join('');
+  app.innerHTML = `<section class="view"><ul class="article-list">${items}</ul></section>`;
+});
+
+renderHome();
+</script>
+</body>
+</html>
