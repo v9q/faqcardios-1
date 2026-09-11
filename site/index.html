@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Central de Ajuda Cardios (rascunho)</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --ink:#1a2433; --ink-soft:#5b6b7c;
+    --brand:#0f6e5e; --brand-dark:#0b5347; --brand-soft:#e4f3ef;
+    --warn-bg:#fff6e5; --warn-ink:#8a5b00; --warn-border:#f0c869;
+    --border:#e3e8ee; --shadow:0 1px 3px rgba(20,30,40,.08), 0 1px 2px rgba(20,30,40,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:64px}
+  header.hero{background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff;padding:48px 16px 72px}
+  .hero-inner{max-width:760px;margin:0 auto;text-align:center}
+  .hero-inner .draft-badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:4px 12px;border-radius:999px;font-size:12px;letter-spacing:.03em;margin-bottom:14px}
+  .hero-inner h1{font-size:28px;margin:0 0 8px}
+  .hero-inner p{margin:0 0 22px;opacity:.9;font-size:15px}
+  .search-box{max-width:560px;margin:0 auto;position:relative}
+  .search-box input{width:100%;padding:14px 16px 14px 44px;border-radius:12px;border:none;font-size:15px;box-shadow:var(--shadow)}
+  .search-box svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5}
+  main{max-width:960px;margin:-40px auto 0;padding:0 16px}
+  .card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border)}
+  .categories{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;padding:0;list-style:none;margin:0}
+  .cat-card{padding:20px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease}
+  .cat-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(20,30,40,.12)}
+  .cat-card h3{margin:0 0 6px;font-size:16px}
+  .cat-card .count{font-size:13px;color:var(--ink-soft)}
+  .cat-card .volume{margin-top:10px;font-size:12px;color:var(--brand-dark);background:var(--brand-soft);display:inline-block;padding:3px 8px;border-radius:999px}
+  .cat-card.skeleton{opacity:.6}
+  .cat-card.skeleton .count{font-style:italic}
+  section.view{margin-top:22px;padding:24px}
+  .breadcrumb{font-size:13px;color:var(--ink-soft);margin-bottom:14px;cursor:pointer}
+  .breadcrumb span{color:var(--brand-dark);cursor:pointer}
+  .article-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .article-item{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .article-item:hover{border-color:var(--brand)}
+  .article-item .titulo{font-size:14.5px;font-weight:600}
+  .article-item .volume{font-size:12px;color:var(--ink-soft);white-space:nowrap}
+  .flag{display:inline-block;background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-border);font-size:11px;padding:2px 7px;border-radius:6px;margin-left:8px;vertical-align:middle}
+  .article-body h2{font-size:16px;margin:22px 0 8px}
+  .article-body h2:first-child{margin-top:0}
+  .article-body p{line-height:1.6;font-size:14.5px}
+  .article-body ul,.article-body ol{line-height:1.6;font-size:14.5px;padding-left:22px}
+  .article-body strong{color:var(--brand-dark)}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .meta-pill{font-size:12px;background:#eef1f5;color:var(--ink-soft);padding:4px 10px;border-radius:999px}
+  .video-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--brand-dark);text-decoration:none;font-weight:600;margin-bottom:18px}
+  .empty-hint{font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+  .wa-cta{position:fixed;right:20px;bottom:20px;background:#25D366;color:#fff;border-radius:999px;padding:12px 18px;font-size:14px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;text-decoration:none}
+  .no-results{padding:32px;text-align:center;color:var(--ink-soft)}
+  footer.note{max-width:960px;margin:28px auto 0;padding:0 16px 20px;font-size:12px;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="draft-badge">RASCUNHO — para discussão interna</div>
+    <h1>Central de Ajuda Cardios</h1>
+    <p>Como podemos te ajudar? Busque por equipamento, software ou palavra-chave.</p>
+    <div class="search-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="Ex: cartão de memória, Bluetooth, CardioNet...">
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="app" class="card"></div>
+</main>
+
+<footer class="note">Protótipo de demonstração — conteúdo baseado na análise de atendimentos do Suri (jun–set/2026), manuais, folhetos e vídeos oficiais Cardios. Ver <code>docs/analise-dados-suporte.md</code> para o detalhe completo.</footer>
+
+<a class="wa-cta" href="#" onclick="return false;">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.6 0-3.1-.42-4.4-1.16l-.32-.19-3.01.79.8-2.93-.2-.32A7.94 7.94 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/></svg>
+  Falar no WhatsApp
+</a>
+
+<script id="faq-data" type="application/json">[{"categoria": "Holter", "artigos": [{"id": "holter-cartao-memoria", "categoria": "Holter", "produtos": ["CardioLight", "CardioLight+", "CardioLoop"], "titulo": "O cartão do meu Holter não grava, dá erro de leitura ou o exame não abre no aplicativo", "volume_suri": "389 casos em 3 meses — maior tema isolado de todo o suporte técnico", "fontes": ["Manual do Usuário CardioLight VER003-DEZ/2024", "Manual do Usuário CardioLoop VER003-FEV2025"], "video": "https://www.youtube.com/watch?v=GEi-F9ate28", "status": "pronto para revisão", "body": "## Resposta rápida (bot / primeira mensagem)\n\nO cartão SD do seu gravador Holter (CardioLight, CardioLight+ ou CardioLoop) é o que armazena o exame **e** configura o aparelho. A maioria dos problemas de leitura/gravação cai em uma destas causas:\n\n1. **Cartão de outro produto ou comprado fora da Cardios.** O gravador só é compatível com os cartões SD fornecidos pela Cardios para aquele modelo específico — cartões de outros produtos Cardios (ex: um cartão de MAPA num Holter) ou cartões comuns de loja não funcionam.\n2. **Cartão não preparado antes do uso.** O cartão precisa ser preparado no **CardioSmart** ou **CardioNet** (com os dados do exame/paciente) antes de ser inserido no gravador. Um cartão \"cru\" não vai gravar corretamente.\n3. **Encaixe invertido.** O encaixe do cartão deve seguir a orientação indicada no gravador (observe os pontos/marcas de referência) — inserir invertido pode danificar o cartão ou o próprio aparelho.\n4. **Cartão usado para outra finalidade.** Nunca grave fotos ou outros arquivos no cartão do Holter — isso pode corromper os dados do exame.\n\n## Passo a passo para orientar o cliente\n\n1. Confirme o modelo do gravador (CardioLight, CardioLight+ ou CardioLoop) — os cartões não são intercambiáveis entre modelos.\n2. Confirme se o cartão foi preparado no CardioSmart/CardioNet antes de ser colocado no gravador.\n3. Peça para reinserir o cartão observando a orientação correta (ver manual, seção \"Cartão SD\").\n4. Se o problema persistir mesmo com cartão original, preparado corretamente e bem encaixado, é caso de **encaminhar para o suporte técnico** — pode ser defeito físico do cartão ou do leitor do gravador.\n\n## Quando escalar para atendimento humano\n\n- Cliente já confirmou que o cartão é original, foi preparado corretamente e está bem encaixado, e o erro persiste.\n- Suspeita de defeito de hardware (cartão ou gravador).\n- Cliente com prazo urgente de laudo (Assistência Técnica pode ter fila — sinalizar prioridade).\n\n## Fonte / observações\n\nConteúdo baseado no Manual do Usuário CardioLight (seção 2.8 \"Cartão SD\") e no procedimento de encaixe do Manual do Usuário CardioLoop (1º e 2º passo de instalação). Vídeo de treinamento \"Série Equipamentos - Cardiolight\" cobre o manuseio geral do gravador.", "is_skeleton": false}, {"id": "holter-duvida-utilizacao", "categoria": "Holter", "produtos": ["CardioLight", "CardioLight+", "CardioLoop", "Cardioseven"], "titulo": "Como instalar corretamente o Holter no paciente (eletrodos, cabo, botão)", "volume_suri": "288 casos em 3 meses (Holter + Dúvida de utilização)", "fontes": ["Manual do Usuário CardioLoop VER003-FEV2025", "Manual do Usuário CardioLight VER003-DEZ/2024"], "video": "https://www.youtube.com/watch?v=4w-uK-WhIUU", "status": "pronto para revisão", "body": "## Resposta rápida (bot / primeira mensagem)\n\nA qualidade do exame de Holter depende diretamente da preparação da pele e da colocação correta dos eletrodos. Os pontos que mais geram dúvida:\n\n1. **Preparação da pele** — antes de colocar os eletrodos:\n   - **Depilação** da área (mesmo pouco pelo já prejudica o contato elétrico);\n   - **Limpeza da pele** com gaze e álcool etílico 70% para remover a gordura superficial;\n   - **Escarificação leve** para remover células mortas da pele — garante melhor contato elétrico.\n2. **Cabo de paciente** — conferir que está corretamente conectado ao gravador antes de iniciar a gravação.\n3. **Botão multifuncional / indicadores (LED e sonoro)** — usados para marcar eventos e verificar o status do gravador durante o exame; confirmar com o cliente se ele sabe interpretar os sinais.\n\n## Passo a passo para orientar o cliente\n\n1. Perguntar em qual etapa o cliente está com dúvida: preparação do paciente, conexão do cabo, ou leitura dos indicadores.\n2. Para preparação de pele: reforçar a sequência depilação → limpeza com álcool 70% → leve escarificação.\n3. Para cabo de paciente: confirmar encaixe correto no gravador e nos eletrodos.\n4. Para indicadores: consultar a tabela de sinalização de erros do manual do modelo específico.\n\n## Quando escalar para atendimento humano\n\n- Dúvida persiste após orientação de preparação de pele/cabo (pode indicar defeito no cabo ou no gravador).\n- Erro sinalizado pelo LED/indicador sonoro que não está documentado na resposta padrão.\n\n## Fonte / observações\n\nProcedimento de preparação de pele extraído do Manual do Usuário CardioLoop (3º passo de instalação). Vídeo \"Holter na Prática Clínica: Dicas Essenciais\" cobre uso clínico mais aprofundado e pode ser indicado para médicos/técnicos que queiram se aprofundar.", "is_skeleton": false}], "esqueleto": null}, {"categoria": "MAPA", "artigos": [{"id": "mapa-bluetooth", "categoria": "MAPA", "produtos": ["Dyna-MAPA AOP", "Dyna-MAPA NG"], "titulo": "Como configurar/conectar o MAPA por Bluetooth", "volume_suri": "32 casos em 3 meses", "fontes": ["Manual do Usuário Dyna-MAPA AOP VER003/FEV2025"], "status": "pronto para revisão", "body": "## Resposta rápida (bot / primeira mensagem)\n\nO Dyna-MAPA AOP (e modelos equivalentes) pode se comunicar com o computador por **cabo/interface serial** ou por **Bluetooth** — é preciso selecionar a interface correta no próprio aparelho antes de tentar conectar.\n\n## Passo a passo para orientar o cliente\n\n1. Com o monitor **desligado**, garantir que não há cabo/adaptador USB conectado (a troca de interface é feita com o monitor desligado).\n2. Ligar o monitor e, com o equipamento ligado, pressionar simultaneamente as teclas indicadas no manual até o visor mostrar o menu de interface.\n3. Navegar até a opção Bluetooth e confirmar a seleção.\n4. No computador, parear o Bluetooth do monitor como um novo dispositivo (o pareamento aparece no software de configuração, ex: CardioSmart).\n\n## Quando escalar para atendimento humano\n\n- Aparelho não entra no menu de seleção de interface (pode indicar problema de firmware/hardware).\n- Pareamento Bluetooth aparece no Windows mas o software Cardios não reconhece o dispositivo.\n- Bateria fraca — o manual recomenda conferir a tensão mínima das pilhas antes de diagnosticar como problema de conexão (pilhas NiMH devem estar ≥ 2,75V após remoção do carregador).\n\n## Fonte / observações\n\nProcedimento de seleção de interface Bluetooth extraído do Manual do Usuário Dyna-MAPA AOP (seção de configuração do monitor). Vale confirmar com o Filipe se o passo a passo exato de teclas é o mesmo em todos os modelos Dyna-MAPA em campo hoje, já que pode variar por versão de firmware.", "is_skeleton": false}, {"id": "mapa-cabo-usb-rs232", "categoria": "MAPA", "produtos": ["CardioMAPA", "Dyna-MAPA AOP", "Dyna-MAPA NG"], "titulo": "O computador não reconhece o cabo/adaptador RS232-USB do meu MAPA", "volume_suri": "88 casos em 3 meses", "fontes": ["QuickSteps Cabo Adaptador RS232/USB e Adaptador IR/USB (REV006)", "Manual do Usuário Dyna-MAPA AOP VER003/FEV2025"], "status": "pronto para revisão", "body": "## Resposta rápida (bot / primeira mensagem)\n\nA causa mais comum de falha de conexão do cabo adaptador RS232/USB é o **driver não instalado corretamente** ou o **Windows atribuindo a porta COM errada**. Passos:\n\n1. Confirmar que o driver do Cabo Adaptador RS232/USB foi instalado (CD/instalador que acompanha o acessório).\n2. Se o cliente também usa o Adaptador IR/USB (para gravadores digitais de Holter) no mesmo computador, atenção: **cada adaptador deve ficar sempre na mesma porta USB física** — se for trocado de porta, o Windows atribui uma nova porta COM e a configuração do software (CardioSmart) precisa ser refeita.\n3. Verificar no Gerenciador de Dispositivos do Windows qual porta COM foi atribuída ao adaptador, e conferir se essa é a mesma porta selecionada no CardioSmart.\n\n## Passo a passo para orientar o cliente\n\n1. Perguntar se o cabo já funcionou antes ou se é a primeira instalação.\n2. Se for a primeira vez: confirmar instalação do driver específico do Cabo Adaptador RS232/USB (não confundir com o driver do Adaptador IR/USB — são drivers diferentes).\n3. Se já funcionou antes e parou: perguntar se o cabo foi trocado de porta USB, ou se outro adaptador Cardios foi conectado depois. Orientar a reconectar na mesma porta original ou reconfigurar a porta COM no CardioSmart.\n4. Confirmar compatibilidade do sistema operacional (driver homologado para Windows; versões muito antigas ou muito novas podem exigir atenção extra — validar com suporte técnico se necessário).\n\n## Quando escalar para atendimento humano\n\n- Driver instalado corretamente, porta COM confirmada, e ainda assim sem comunicação — pode ser defeito no cabo ou na porta do monitor.\n- Cliente em sistema operacional não coberto pela documentação atual (confirmar compatibilidade com o time técnico).\n\n## Fonte / observações\n\nBaseado no guia rápido \"QuickSteps Cabo Adaptador RS232/USB e Adaptador IR/USB\" (nota importante sobre troca de porta COM) e nos acessórios listados no Manual do Usuário Dyna-MAPA AOP (Adaptador RS-232/USB).", "is_skeleton": false}, {"id": "mapa-duvida-utilizacao", "categoria": "MAPA", "produtos": ["CardioMAPA", "Dyna-MAPA AOP", "Dyna-MAPA NG"], "titulo": "Dúvidas gerais de uso do MAPA (manguito, função dia/noite, desligar)", "volume_suri": "66 casos em 3 meses (MAPA + Dúvida de utilização)", "fontes": ["Manual do Usuário CardioMapa VER003-FEV/2025"], "video": "https://www.youtube.com/watch?v=cfPMaHNBcDw", "status": "pronto para revisão", "body": "## Resposta rápida (bot / primeira mensagem)\n\nDúvidas de uso do MAPA costumam cair em três pontos: **colocação do manguito**, **função Dia/Noite** (que ajusta a frequência de medições conforme o período do paciente) e **como desligar o aparelho corretamente** ao final do exame.\n\n## Passo a passo para orientar o cliente\n\n1. Perguntar qual é a dúvida específica: colocação do manguito, ajuste do dia/noite, ou finalização do exame.\n2. Manguito: confirmar o tamanho correto (o kit padrão acompanha manguito tamanho médio 24-32cm) e a posição no braço conforme o manual.\n3. Dia/Noite: explicar que essa função ajusta os intervalos de medição automaticamente e pode ser configurada antes de instalar o aparelho no paciente.\n4. Desligamento: orientar a sequência correta de desligar pelo teclado, para não perder dados do exame já gravado.\n\n## Quando escalar para atendimento humano\n\n- Cliente com dúvida sobre configuração específica que não está coberta aqui (ex: parâmetros clínicos de medição) — direcionar para o vídeo de treinamento completo ou para a central de suporte.\n\n## Fonte / observações\n\nBaseado no Manual do Usuário CardioMapa (seções \"Teclado\" e \"A função Dia/Noite\"). Vídeo de treinamento \"Manuseio do CardioMAPA e Preparação do Cartão\" cobre esse fluxo com demonstração visual.", "is_skeleton": false}], "esqueleto": null}, {"categoria": "CardioNet", "artigos": [{"id": "cardionet-conexao-cnet", "categoria": "CardioNet", "produtos": ["CardioNet Client", "CardioNet Server", "Portal CardioNet"], "titulo": "O CardioNet não conecta / exame não sobe para o Portal CardioNet", "volume_suri": "102 casos em 3 meses", "fontes": ["Notas internas do projeto de integração DICOM/CardioNet"], "status": "⚠️ rascunho — validar com Filipe", "body": "## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\nFalha de conexão do CardioNet costuma ser um destes três casos:\n\n1. **Sem acesso à internet** no computador onde o Client/Server está instalado (checar navegação básica primeiro).\n2. **Firewall/antivírus corporativo bloqueando** a comunicação do software com o servidor Cardios.\n3. **Credencial incorreta ou expirada** — as credenciais de conexão são as mesmas da conta do serviço de saúde no Portal CardioNet.\n\n## Passo a passo para orientar o cliente\n\n1. Confirmar se o computador tem internet funcionando normalmente (fora do CardioNet).\n2. Pedir para tentar acessar o Portal CardioNet pelo navegador com as mesmas credenciais — se não conseguir logar ali também, é problema de credencial, não de conexão do software.\n3. Se o portal abre normalmente mas o software não conecta, orientar a checar com o TI do cliente se há bloqueio de firewall/antivírus.\n\n## Quando escalar para atendimento humano\n\n- Portal acessível e credenciais corretas, mas o software Client/Server continua sem conectar.\n- Suspeita de bloqueio de rede que o cliente não consegue resolver sozinho (nível 1 não deve tentar abrir portas remotamente).\n\n## Fonte / observações\n\n⚠️ Este artigo foi montado com base no que já sabíamos do projeto de integração CardioNet/DICOM (não é um manual de troubleshooting oficial) — é o que mais precisa da revisão do Filipe antes de virar conteúdo final, incluindo confirmar quais portas/URLs específicas costumam ser bloqueadas.", "is_skeleton": false}, {"id": "cardionet-configurar-analista", "categoria": "CardioNet", "produtos": ["CardioNet Client"], "titulo": "Como configurar o analista/central de análise de destino no CardioNet", "volume_suri": "122 casos em 3 meses", "fontes": ["Anexo_SW CardioNET-CNC (ficha técnica)"], "status": "⚠️ rascunho — validar com Filipe", "body": "## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\nO CardioNet Client precisa saber para qual central de análise (analista) cada exame deve ser enviado. Quando o cliente troca de central de análise, ou atende mais de uma, é comum surgir dúvida em como configurar/trocar esse destino no software.\n\n## ⚠️ Pontos que precisam de confirmação técnica antes de virar resposta final\n- Tela exata e nome do menu onde se configura o analista/central de destino na versão atual do CardioNet Client.\n- Se a configuração é por exame individual ou por perfil padrão do Client.\n- Se existe algum cadastro prévio necessário (pelo Portal CardioNet ou pela própria central de análise) antes de aparecer como opção no software.\n\n## Quando escalar para atendimento humano\n\n- Qualquer configuração de analista que não seja a simples troca de destino já cadastrado — por ora, tratar como caso para o suporte técnico até este artigo ser validado.\n\n## Fonte / observações\n\nEste é o artigo com menos base documental hoje — a ficha técnica disponível não detalha esse fluxo de configuração. **Prioridade alta para revisão com o Filipe**, dado o volume (122 casos em 3 meses).", "is_skeleton": false}, {"id": "cardionet-instalacao", "categoria": "CardioNet", "produtos": ["CardioNet Client", "CardioNet Server"], "titulo": "Como instalar o CardioNet (Client/Server) e principais erros de instalação", "volume_suri": "208 casos em 3 meses — 2º maior tema depois do cartão do Holter", "fontes": ["Anexo_SW CardioNET-CNC (ficha técnica)", "Anexo_SW CardioNET-CNS (ficha técnica)", "Folheto CardioNet"], "video": "https://www.youtube.com/watch?v=Onu59nKFLc4", "status": "⚠️ rascunho — validar passo a passo técnico com Filipe antes de publicar", "body": "## O que é o CardioNet (contexto para quem for responder)\n\nO CardioNet é o software de transmissão de exames de Holter/MAPA via Internet, dispensando a troca física de cartão de memória entre quem grava o exame e quem analisa (central de análise). Existem duas pontas:\n\n- **CardioNet Client** — instalado no local que grava e envia o exame (consultório, clínica, hospital).\n- **CardioNet Server** — instalado na central de análise, que recebe os exames enviados.\n\nAmbos dependem também do **Portal CardioNet** (área web) para consulta de relatórios e estatísticas de transmissão.\n\n## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\n1. Confirmar qual dos dois o cliente está instalando: **Client** (quem grava/envia) ou **Server** (quem recebe/analisa) — os instaladores e o fluxo de configuração inicial são diferentes.\n2. Confirmar que o computador tem acesso à Internet liberado para o software (portas/URLs do CardioNet não devem estar bloqueadas por firewall/antivírus corporativo).\n3. Confirmar que o cliente tem as credenciais do Portal CardioNet em mãos — são as mesmas usadas para a conta do serviço de saúde no portal.\n\n## ⚠️ Pontos que precisam de confirmação técnica antes de virar resposta final\n- Passo a passo exato do instalador atual (tela a tela) — os anexos técnicos disponíveis são fichas comerciais, não um guia de instalação passo a passo.\n- Requisitos de sistema operacional/hardware atualizados (o que está documentado é antigo).\n- Lista de URLs/portas que precisam estar liberadas no firewall, para orientar o TI do cliente.\n\n## Quando escalar para atendimento humano\n\n- Qualquer erro de instalação que não seja \"sem internet\" ou \"sem credencial\" — nível 1 não deve tentar diagnosticar erros de instalador sem checklist validado.\n\n## Fonte / observações\n\nBaseado nas fichas técnicas comerciais do CardioNet Client/Server e no Folheto CardioNet. **Este artigo precisa de uma passada com o Filipe** para virar um guia de instalação de verdade — hoje é mais um roteiro de triagem do que um passo a passo técnico completo.", "is_skeleton": false}, {"id": "cardionet-reset-senha", "categoria": "CardioNet", "produtos": ["Portal CardioNet"], "titulo": "Esqueci/preciso trocar a senha do Portal CardioNet", "volume_suri": "16 casos em 3 meses — tema novo, bom candidato a resposta 100% automática", "fontes": ["Notas internas do projeto de integração DICOM/CardioNet"], "status": "⚠️ rascunho — confirmar fluxo exato de recuperação com Filipe", "body": "## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\nAs credenciais de acesso ao Portal CardioNet são as mesmas da conta do serviço de saúde do cliente. Este é um dos temas mais simples de resolver 100% pelo bot, sem precisar de atendente — vale ser um dos primeiros fluxos totalmente automatizados.\n\n## ⚠️ Pontos que precisam de confirmação técnica antes de virar resposta final\n- URL exata da tela de \"esqueci minha senha\" do Portal CardioNet.\n- Se a recuperação é por e-mail cadastrado, ou se depende de contato com o suporte para reset manual.\n- Se há um responsável/administrador por conta que pode resetar a senha de outros usuários da mesma clínica.\n\n## Quando escalar para atendimento humano\n\n- Cliente não tem mais acesso ao e-mail cadastrado.\n- Conta bloqueada por tentativas — pode exigir reset manual pelo suporte.\n\n## Fonte / observações\n\nAssim que o fluxo de recuperação for confirmado com o Filipe, este artigo tem potencial de virar uma resposta 100% automática do bot (sem necessidade de atendente humano) — baixo volume mas alta automatização possível.", "is_skeleton": false}], "esqueleto": null}, {"categoria": "CardioSmart", "artigos": [], "esqueleto": {"categoria": "CardioSmart", "volume_suri": "209 casos em 3 meses", "fontes_disponiveis": ["Anexo_CardioSmart530.pdf", "Anexo_CardioSmart540.pdf", "Anexo_CardioSmart550.pdf", "Folheto Diferenças SW CS"], "status": "esqueleto — sem artigos ainda, próxima rodada", "body": "# CardioSmart — pendente de conteúdo\n\nCategoria de software de análise (versões 530/540/550). Ainda não escrita em detalhe — priorizada Holter, MAPA e CardioNet nesta primeira rodada.\n\nTópicos prováveis para a próxima rodada (a validar com Filipe):\n- Diferenças entre as versões 530/540/550 (já existe um folheto específico sobre isso).\n- Instalação e licenciamento.\n- Erros comuns de análise/processamento de exame.", "is_skeleton": true}}, {"categoria": "Pressão Central", "artigos": [], "esqueleto": {"categoria": "Pressão Central", "volume_suri": "140 casos em 3 meses", "fontes_disponiveis": ["Manual do Usuário Arteris AOP VER003-FEV2025"], "video": "https://www.youtube.com/watch?v=PxK0TWdgU3U", "status": "esqueleto — sem artigos ainda, próxima rodada", "body": "# Pressão Central (Arteris AOP) — pendente de conteúdo\n\nCategoria do monitor de pressão arterial/pressão central Arteris AOP. Reclamações públicas (Reclame Aqui) indicam problemas recorrentes de conectividade/reconexão — mesmo padrão de MAPA.\n\nTópicos prováveis para a próxima rodada:\n- Conectividade/reconexão do aparelho (tema mais citado nas reclamações públicas).\n- Instalação e restrições de uso (o manual já tem seções detalhadas sobre isso).\n- Dúvida de utilização (45 casos combinados com \"Dúvida de utilização\").", "is_skeleton": true}}, {"categoria": "ECG", "artigos": [], "esqueleto": {"categoria": "ECG", "volume_suri": "92 casos em 3 meses", "fontes_disponiveis": ["Manual do Usuário Cardioseven VER003-DEZ2024", "Manual do Usuário Dynamis VER00-FEV2025"], "status": "esqueleto — sem artigos ainda, próxima rodada", "body": "# ECG (Cardioseven, Dynamis) — pendente de conteúdo\n\nCategoria de eletrocardiógrafos Cardioseven e Dynamis. Volume menor, mas com manuais atuais já disponíveis.\n\nTópicos prováveis para a próxima rodada:\n- Instalação/colocação de eletrodos.\n- Dúvidas de utilização gerais do equipamento.", "is_skeleton": true}}, {"categoria": "Comercial", "artigos": [], "esqueleto": {"categoria": "Comercial", "volume_suri": "831 atendimentos em 3 meses (12,8% do total) — inclui tag Representante (202 casos)", "status": "esqueleto — sem artigos ainda, próxima rodada", "body": "# Comercial — pendente de conteúdo\n\nDepartamento com maior tempo médio de atendimento depois de Assistência Técnica (~321 min). Ainda não mapeamos os motivos específicos além da tag \"Representante\" — vale um levantamento com o time comercial antes de escrever os artigos.\n\nTópicos prováveis:\n- Como falar com o representante da minha região.\n- Planos e orçamento.", "is_skeleton": true}}, {"categoria": "Financeiro", "artigos": [], "esqueleto": {"categoria": "Financeiro", "volume_suri": "118 atendimentos em 3 meses (1,8% do total) — menor volume entre os departamentos", "status": "esqueleto — sem artigos ainda, próxima rodada", "body": "# Financeiro — pendente de conteúdo\n\nMenor volume entre os departamentos, mas ainda sem dados de tags específicas do Suri para esse departamento. Precisa de um levantamento com o time financeiro sobre os motivos mais comuns (2ª via de boleto, nota fiscal, etc.) antes de escrever os artigos.", "is_skeleton": true}}, {"categoria": "Assistência Técnica", "artigos": [], "esqueleto": {"categoria": "Assistência Técnica", "volume_suri": "515 atendimentos em 3 meses (7,9% do total) — maior tempo médio de atendimento (363 min) e de resposta (123 min) entre todos os departamentos", "status": "esqueleto — provável fluxo de escalonamento, não de autoatendimento", "body": "# Assistência Técnica — pendente de conteúdo\n\nDiferente das outras categorias, Assistência Técnica provavelmente não deve virar uma FAQ de autoatendimento — é o departamento com os casos mais longos e complexos (defeitos de hardware, envio de equipamento para reparo). O papel da FAQ/bot aqui é **triar rápido e direcionar certo**, não tentar resolver via bot.\n\nTópicos prováveis para desenhar o fluxo (não como FAQ, mas como triagem):\n- Coleta de informações do defeito antes de abrir o chamado (modelo, nº de série, descrição do problema).\n- Processo de envio/retorno de equipamento para reparo (existe material de \"Declaração de envio\" nos arquivos internos de Assistência Técnica).\n- Definir SLA esperado para esse tipo de chamado, para o bot já informar o cliente na abertura.", "is_skeleton": true}}]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('faq-data').textContent);
+
+function mdToHtml(md) {
+  const lines = md.split('\n');
+  let html = '';
+  let inList = false;
+  for (let line of lines) {
+    line = line.trim();
+    if (!line) { if (inList) { html += '</ul>'; inList = false; } continue; }
+    if (line.startsWith('## ')) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<h2>${inline(line.slice(3))}</h2>`;
+    } else if (/^[0-9]+\.\s/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<p>${inline(line)}</p>`;
+    } else if (line.startsWith('- ')) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += `<li>${inline(line.slice(2))}</li>`;
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<p>${inline(line)}</p>`;
+    }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+function inline(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+}
+
+function catIcon(cat){
+  return {
+    'Holter':'🫀','MAPA':'🩺','CardioNet':'🌐','CardioSmart':'💻',
+    'Pressão Central':'📈','ECG':'📉','Comercial':'💬','Financeiro':'💳',
+    'Assistência Técnica':'🛠️'
+  }[cat] || '📄';
+}
+
+const app = document.getElementById('app');
+
+function renderHome() {
+  const items = DATA.map(c => {
+    const n = c.artigos.length;
+    const skeleton = n === 0;
+    return `<li class="cat-card ${skeleton ? 'skeleton' : ''}" onclick="renderCategory('${encodeURIComponent(c.categoria)}')">
+      <h3>${catIcon(c.categoria)} ${c.categoria}</h3>
+      <div class="count">${skeleton ? 'em construção — próxima rodada' : n + ' artigo' + (n>1?'s':'')}</div>
+      ${c.esqueleto ? `<div class="volume">${c.esqueleto.volume_suri || ''}</div>` : (c.artigos[0] ? `<div class="volume">${c.artigos.reduce((s,a)=> s, '')}</div>` : '')}
+    </li>`;
+  }).join('');
+  app.innerHTML = `<section class="view"><ul class="categories">${items}</ul></section>`;
+}
+
+function renderCategory(catEncoded) {
+  const cat = decodeURIComponent(catEncoded);
+  const data = DATA.find(c => c.categoria === cat);
+  if (!data) return renderHome();
+  if (data.artigos.length === 0) {
+    app.innerHTML = `<section class="view">
+      <div class="breadcrumb"><span onclick="renderHome()">Central de Ajuda</span> / ${cat}</div>
+      <h2>${catIcon(cat)} ${cat}</h2>
+      <div class="empty-hint">${mdToHtml(data.esqueleto.body)}</div>
+    </section>`;
+    return;
+  }
+  const items = data.artigos.map((a, i) => `
+    <li class="article-item" onclick="renderArticle('${encodeURIComponent(cat)}', ${i})">
+      <span class="titulo">${a.titulo}${a.status && a.status.startsWith('⚠️') ? '<span class="flag">revisão pendente</span>' : ''}</span>
+      <span class="volume">${a.volume_suri || ''}</span>
+    </li>`).join('');
+  app.innerHTML = `<section class="view">
+    <div class="breadcrumb"><span onclick="renderHome()">Central de Ajuda</span> / ${cat}</div>
+    <h2>${catIcon(cat)} ${cat}</h2>
+    <ul class="article-list">${items}</ul>
+  </section>`;
+}
+
+function renderArticle(catEncoded, idx) {
+  const cat = decodeURIComponent(catEncoded);
+  const data = DATA.find(c => c.categoria === cat);
+  const a = data.artigos[idx];
+  const pills = [];
+  if (a.volume_suri) pills.push(a.volume_suri);
+  if (a.produtos) pills.push((Array.isArray(a.produtos)?a.produtos.join(', '):a.produtos));
+  app.innerHTML = `<section class="view">
+    <div class="breadcrumb"><span onclick="renderHome()">Central de Ajuda</span> / <span onclick="renderCategory('${encodeURIComponent(cat)}')">${cat}</span> / artigo</div>
+    <h2 style="font-size:19px">${a.titulo}${a.status && a.status.startsWith('⚠️') ? '<span class="flag">revisão pendente</span>' : ''}</h2>
+    <div class="meta-row">${pills.map(p=>`<span class="meta-pill">${p}</span>`).join('')}</div>
+    ${a.video ? `<a class="video-link" href="${a.video}" target="_blank" rel="noopener">▶ Ver vídeo de treinamento relacionado</a>` : ''}
+    <div class="article-body">${mdToHtml(a.body)}</div>
+  </section>`;
+}
+
+document.getElementById('search').addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  if (!q) { renderHome(); return; }
+  const results = [];
+  DATA.forEach(c => c.artigos.forEach((a, i) => {
+    const hay = (a.titulo + ' ' + a.categoria + ' ' + (a.body||'')).toLowerCase();
+    if (hay.includes(q)) results.push({cat: c.categoria, idx: i, a});
+  }));
+  if (results.length === 0) {
+    app.innerHTML = `<section class="view no-results">Nenhum artigo encontrado para "${e.target.value}". Em breve isso vira um gatilho para abrir o chat com um atendente.</section>`;
+    return;
+  }
+  const items = results.map(r => `
+    <li class="article-item" onclick="renderArticle('${encodeURIComponent(r.cat)}', ${r.idx})">
+      <span class="titulo">${catIcon(r.cat)} ${r.a.titulo}</span>
+      <span class="volume">${r.cat}</span>
+    </li>`).join('');
+  app.innerHTML = `<section class="view"><ul class="article-list">${items}</ul></section>`;
+});
+
+renderHome();
+</script>
+</body>
+</html>
